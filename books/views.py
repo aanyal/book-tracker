@@ -19,8 +19,13 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
+import os
+
 #API KEY: AIzaSyC_JoRjMoFV7JdtBbZ5LA_LLfwZdv2QIEE
-API_KEY = "AIzaSyC_JoRjMoFV7JdtBbZ5LA_LLfwZdv2QIEE"
+api_key_dir = os.path.dirname(__file__)
+api_key_path = os.path.join(api_key_dir, 'api_key.txt')
+API_KEY = open(api_key_path).read()
+
 DEFAULT_COVER = "https://cdn.vectorstock.com/i/1000v/52/86/red-cartoon-question-mark-vector-51155286.jpg"
 
 EDGE_CURL = "edge=curl"
