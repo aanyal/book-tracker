@@ -1,0 +1,33 @@
+<div id="dynamic-item-details">
+
+{% for eachSuggestion in suggested_book_titles%}
+    <button type="button" onclick="selectOption(this)" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">
+        <span> {{eachSuggestion.book_title}}</span> 
+        <span> {{eachSuggestion.book_author}}</span> 
+        <span> {{eachSuggestion.book_cover}}</span> 
+    </button>
+    
+{% endfor %}
+
+</div>
+
+<script>
+function selectOption(element) {
+    const all_details = element.children;
+
+    const book_title = all_details[0].innerText;
+    const book_author = all_details[1].innerText;
+    const book_cover = all_details[2].innerText;
+
+    document.getElementById("book_title").value = book_title;
+    document.getElementById("book_author").value = book_author;
+    document.getElementById("book_cover").value = book_cover;
+
+    document.getElementById("current_book_cover").src = book_cover;
+
+    all_options = document.getElementById("suggestions");
+    all_options.style.display = 'none';
+}
+
+</script>
+

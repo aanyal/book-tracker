@@ -1,0 +1,23 @@
+#source venv/bin/activate
+#python3 manage.py collectstatic --noinput --clear
+
+#django-admin startproject book_tracker
+
+#python3 manage.py runserver
+
+#python3 manage.py startapp articles
+#create an app -> create a model -> add it to APPS on Settings
+    #everytime you change an app - pythom manage.py makemigrations -> python manage.py migrate
+    #add each view to urls
+
+#for the login, logout pages, the type="hidden" redirects the page
+
+#for css files, remember to add: 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+#pip install psycopg2-binary - to install the PostGRE Database
+#pip freeze > requirements.txt
+
+When you add the CSRF token, add this to settings.py: django.middleware.csrf.CsrfViewMiddleware

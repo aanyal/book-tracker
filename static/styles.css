@@ -1,0 +1,127 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: "DM Sans", sans-serif;
+    background-color: rgb(245, 245, 245);
+}
+.container {
+    display: flex;
+}
+.box {
+    text-align: center;
+    /* border-radius: 15px; */
+}
+
+.box h1 {
+    font-size: 3em;
+}
+
+.left-menu {
+    width: 30%;
+
+    border-right: solid 2px;
+    border-color: rgb(190, 190, 190);
+}
+
+.right-menu {
+    width:70%;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.book-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    padding-left: 10px
+}
+
+.book {
+    flex-direction: row;
+    height: 200px;
+    flex-basis: 32.8%;
+    border-radius: 15px;
+    background-color: red;
+}
+
+.book h2 {
+    font-size: 20px;
+    padding-top: 10px;
+    margin: 0px;
+}
+
+.book p {
+    padding: 0;
+    margin: 0px;
+}
+
+
+
+.button {
+  font-size: 1em;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #06D85F;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button:hover {
+  background: #06D85F;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 50%;
+  min-height: 60vh;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  /* max-height: 30%; */
+  overflow: auto;
+}

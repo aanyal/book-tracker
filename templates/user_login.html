@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+</head>
+<body>
+<p>Hello</p>
+<form action="{% url 'books:login' %}"  method="post">
+  {% csrf_token %}
+  
+  <div class="container">
+    <h1>Login</h1>
+    <label for="username"><b>User Name</b></label>
+    <input type="text" placeholder="Enter User Name: " name="username" required>
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password: " name="password" required>
+    <div>
+      <button class="button" type="submit">Login</button>
+    </div>
+  </div>
+
+</form>
+</body>
+</html>

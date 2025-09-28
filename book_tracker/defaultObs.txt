@@ -1,0 +1,55 @@
+default_genres = ['fantasy', 'adventure', 'science fiction', 'dystopian', 'mystery', 'horror', 'thriller', 'romance']
+colors = ["#ffafa9", "#ffbf91", "#fff7b3", "#d6ffaa", "#b1ffdc", "#aeb1ff", "#e6b7ff", "#ffdbf1"]
+
+i = 0
+all_defaults = []
+for eachGenre in default_genres:
+    temp = Genres.objects.filter(title=eachGenre)
+    if temp.exists():
+        all_defaults.append({'title': temp[0].title, 'color': temp[0].color})
+    else:
+        g = Genres.objects.create(title=eachGenre, color=colors[i], type="default")
+        g.save()
+    i += 1
+
+
+.then(data => {
+    document.getElementById('bye').innerText = "success";
+    console.log(data.message);
+    window.location.reload();
+})
+.catch(error => {
+    document.getElementById('bye').innerText = "failure";
+    console.error('Error:', error);
+});
+
+
+
+window.location.reload();
+
+
+
+scrapetheweb:
+
+# url_template = "https://www.goodreads.com/search?utf8=%E2%9C%93&query="
+
+    # url = url_template + '+'.join(input_text.split(" "))
+
+    # page = urlopen(url)
+    # html = page.read().decode("utf-8")
+    # soup = BeautifulSoup(html, "html.parser")
+
+    # book_author_title = soup.find_all(itemprop="name")
+    # book_id = soup.find_all(id="book_id")
+    # book_titles_and_authors = []
+
+    # j = 0
+    # for i in range(0, len(book_author_title), 2):
+    #     if (i+1 < len(book_author_title)-1):
+    #         book_titles_and_authors.append({"title": book_author_title[i].get_text(),
+    #                                         "author": book_author_title[i+1].get_text(),
+    #                                         "id": book_id[j].get('value')})
+
+    #     j += 1
+    # client = GoogleBooksAPI()
+    # print(client.get_book_by_title(input_text))

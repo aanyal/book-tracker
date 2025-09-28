@@ -1,0 +1,171 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+{% load static %}
+<div id="popup1" class="overlay">
+    <div class="popup">
+        <h2>Here i am</h2>
+        <a class="close" href="#">&times;</a>
+
+        <div class="content container" >
+
+            <div class="left-menu" style="min-height: 60vh;">
+                <img src="https://cdn.vectorstock.com/i/1000v/52/86/red-cartoon-question-mark-vector-51155286.jpg"
+                 style="width: 100%; border-radius: 10px;" id="current_book_cover">
+            </div>
+
+            <div class="right-menu" style="min-height: 60vh;">
+                <form action="{% url 'books:add_book' %}" method="post" id="add_book">
+                    {% csrf_token %}
+
+                    {% comment %} book title input field {% endcomment %}
+                    <div style="display: flex; justify-content: center">
+                        <p>Book Title:        </p>
+                        <ul class="book-list">
+                            <input type="text" placeholder="Enter Book Title: " name="book_title" id="book_title" style="width: 100%; height: 40px" required>
+                            <input type="text" name="book_cover" id="book_cover" style="width: 100%; height: 20px; display: none" required>
+                            <div id="suggestions">
+                            </div>
+
+                        </ul>
+                    </div>
+                    
+
+                    {% comment %} book_cover {% endcomment %}
+                    
+                    {% comment %} book title submission button {% endcomment %}
+                    <button type="button" id="generate_suggestions" 
+                        hx-post="/books/suggested_books/" hx-target="#suggestions" hx-swap="innerHTML">
+                        Search For Book!
+                    </button>
+
+                    
+                    
+                    {% comment %} author input field (auto fills) {% endcomment %}
+                    <div style="display: flex; justify-content: center">
+                        <p>Author:        </p>
+                        <input type="text" placeholder="Enter Book Author: " name="book_author" id="book_author"  required>
+                        <p id="randooo">yello</p>
+                    </div>
+
+                    {% comment %} Display the different genre options {% endcomment %}
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap">
+                        {% for eachGenre in all_unique_genres%}
+
+                        <button class="genre-container genre-select" type="button" style="background-color: {{ eachGenre.color }};" onclick="select_genre(this)">
+                            {{ eachGenre.title }}
+                        </button>
+
+                        {% endfor %}
+                        <input type="text" name="genres_selected" id="genres_selected" style="display:none">
+                    </div>
+
+                    <br>
+
+                    {% comment %} Display the stars {% endcomment %}
+                    <div style="display: flex; justify-content: center">
+                        <div style="display: flex; justify-content: space-between; width: 50%" id="all_stars">
+                            <button class="star" id="one_star" onclick="click_star(this)" type="button">
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 100%">
+                            </button>
+
+                            <button class="star" id="two_star" onclick="click_star(this)" type="button">
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 100%">
+                            </button>
+
+                            <button class="star" id="three_star" onclick="click_star(this)" type="button">
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 100%">
+                            </button>
+
+                            <button class="star" id="four_star" onclick="click_star(this)" type="button">
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 100%">
+                            </button>
+
+                            <button class="star" id="five_star" onclick="click_star(this)" type="button">
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 100%">
+                            </button>
+                        </div>
+
+                        <input id="star_rating" name="star_rating">1</input>
+                    </div>
+                    <p id="yello">bhello</p>
+
+                    <button type="submit">Add Log!</button>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        const all_stars = document.getElementById("all_stars").children;
+        const nums = ["one", "two", "three", "four", "five"]
+
+        let hover_of = true;
+
+        for (const star of all_stars) {
+            document.getElementById("randooo").innerText = "whhwhwhwh";
+            star.addEventListener('mouseover', function() {
+                //document.getElementById("randooo").innerText = hover_of;
+                let filledNum = star.id.substring(0, star.id.indexOf("_"));
+                let filledIndex = nums.indexOf(filledNum);
+                //document.getElementById("randooo").innerText = filledIndex;
+
+                for (let i = 0; i <= filledIndex; i++) {
+                    document.getElementById(nums[i] + "_star").children[0].src = "{% static 'images/star-filled.png' %}";
+                }
+                for (let i = filledIndex+1; i < all_stars.length; i++) {
+                    document.getElementById(nums[i] + "_star").children[0].src = "{% static 'images/star-outline.png' %}";
+                }
+
+                hover_of = true;
+            });
+            star.addEventListener('mouseout', function() {
+                //document.getElementById("randooo").innerText = hover_of;
+                if (hover_of) {
+                    for (let i = 0; i < all_stars.length; i++) {
+                        document.getElementById(nums[i] + "_star").children[0].src = "{% static 'images/star-outline.png' %}";
+                    }
+                }
+            });
+        }
+        
+        function click_star(star) {
+            hover_of = false;
+
+            let filledNum = star.id.substring(0, star.id.indexOf("_"));
+
+            document.getElementById("randooo").innerText = star.id.indexOf("_");
+            
+            let filledIndex = nums.indexOf(filledNum);
+
+            for (let i = 0; i <= filledIndex; i++) {
+                document.getElementById(nums[i] + "_star").children[0].src = "{% static 'images/star-filled.png' %}";
+            }
+            for (let i = filledIndex+1; i < all_stars.length; i++) {
+                document.getElementById(nums[i] + "_star").children[0].src = "{% static 'images/star-outline.png' %}";
+            }
+            document.getElementById("star_rating").value = filledIndex + 1;
+        }
+
+        var buttonsSelected = []
+        function select_genre(element) {
+            var buttons = element.parentElement.getElementsByClassName("genre-select");
+            
+            if (element.classList.contains("active")) {
+                element.classList.remove("active");
+                if (buttonsSelected.includes(element.innerText)) {
+                    buttonsSelected = buttonsSelected.filter(item => item !== element.innerText);
+                }
+            } else {
+                element.classList.add("active");
+                buttonsSelected.push(element.innerText);
+            }
+
+            document.getElementById("genres_selected").value = buttonsSelected;
+        }
+    </script>
+{%endblock%}

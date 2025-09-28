@@ -1,0 +1,236 @@
+<html>
+    <head>
+        <title>Book Tracker</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Squada+One&display=swap" rel="stylesheet">
+
+        <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
+        <style>
+            .genre-select {
+                display: flex;
+            }
+
+            .active {
+                background-color: #feeffe !important;
+            }
+        </style>
+
+    </head>
+
+    <script>
+        var buttonsSelected = []
+        function selectButton(element) {
+            var buttons = element.parentElement.getElementsByClassName("genre-select");
+            
+            if (element.classList.contains("active")) {
+                element.classList.remove("active");
+                if (buttonsSelected.includes(element.innerText)) {
+                    buttonsSelected = buttonsSelected.filter(item => item !== element.innerText);
+                }
+            } else {
+                element.classList.add("active");
+                buttonsSelected.push(element.innerText);
+            }
+
+            document.getElementById("genres_selected").value = buttonsSelected;
+        }
+
+
+    </script>
+
+    <body>
+        
+        <div class="container">
+            <div class="box" id="left-menu">
+                <h1>Book Tracker</h1>
+            </div>
+
+            <div class="box" id="right-menu">
+
+                <a href="#popup1">Let me Pop up</a>
+
+                <div id="popup1" class="overlay">
+                    <div class="popup">
+                        <h2>Here i am</h2>
+                        <a class="close" href="#">&times;</a>
+
+                        <div class="content">
+                            <form action="{% url 'books:add_book' %}" method="post" id="add_book">
+                                {% csrf_token %}
+                                <div style="display: flex; justify-content: center">
+                                <p>Book Title:        </p>
+                                <input type="text" placeholder="Enter Book Title: " name="book_title" id="book_title" required>
+
+                                </div>
+
+                                <div id="suggestions">
+
+                                </div>
+
+                                <button type="button" id="generate_suggestions" 
+                                    hx-post="/books/" hx-target="#suggestions" hx-swap="innerHTML">
+                                    Register!
+                                </button>
+
+                                <p id="bye">hello</p>
+                                
+                                <div style="display: flex; justify-content: center">
+                                <p>Author:        </p>
+                                <input type="text" placeholder="Enter Book Author: " name="author" required>
+                                </div>
+
+                                <div style="display: flex; justify-content: center">
+
+                                {% for eachGenre in all_unique_genres%}
+                                <style>
+                                    .genre-container {
+                                        width: fit-content;
+                                        padding: 2px;
+                                        padding-left: 3px;
+                                        border-radius: 13px;
+                                        margin-top: 10px;
+                                    }
+                                </style>
+
+                                <button class="genre-container genre-select" type="button" style="background-color: {{ eachGenre.color }};" onclick="selectButton(this)">
+                                    {{ eachGenre.title }}
+                                </button>
+
+                                {% endfor %}
+
+                                <input type="text" name="genres_selected" id="genres_selected" style="display:none">
+                                <button type="button" id="book_submit">gosh</button>
+
+                                <div class="genre-container">
+                                    <p style="text-align: left; font-size:12px">+</p>
+                                </div>
+                                
+                                </div>
+                                
+                                <button type="submit">Add Log!</button>
+                                <br>
+
+                                <button type="button" id="not_this" hx-get="/books/" hx-target="#dynamic-content-container" hx-swap="outerHTML">
+                                    Load Dynamic Data
+                                </button>
+
+                                <div id="dynamic-content-container">
+                                    <!-- Dynamic content will be loaded here -->
+                                    <p>Click the button to load dynamic content.</p>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            <form action="{% url 'books:add_throne' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Add Throne</button>
+            </form>
+
+            {% for each_row in books_and_genres%}
+                <div class="book-container">
+                {% for each_book_and_genres in each_row %}
+                    {% if each_book_and_genres != -1%}
+                    <div class="book" style="display:flex;">
+
+                        <div style="width: 43%; background-color: pink; border-radius: 15px; align-content: center">
+                            <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1673566495i/76703559.jpg" 
+                            alt="Italian Trulli" style="height: 95%; border-radius: 10px">
+                        </div>
+
+                        <div style="width: 57%; border-radius: 15px; padding-left: 15px; padding-right: 15px;">
+                            <h2 style="text-align: left">{{each_book_and_genres.book.title}}</h2>
+                            <p style="text-align: left">{{each_book_and_genres.book.author}}</p>
+
+                            <div style="display: flex; justify-content: space-around; margin-top: 4px;">
+                            {%for eachStar in each_book_and_genres.rating%}
+
+                            {% if eachStar == 1 %}
+                                <img src="{% static 'images/star-filled.png' %}" style="width: 14%">
+                            {% else %}
+                                <img src="{% static 'images/star-outline.png' %}" style="width: 14%">
+                            {% endif %}
+
+                            {% endfor %}
+                            </div>
+
+                            {% for eachGenre in each_book_and_genres.genres%}
+                            <style>
+                                .genre-container {
+                                    background-color: {{eachGenre.color}};
+                                    width: fit-content;
+                                    padding: 2px;
+                                    padding-left: 3px;
+                                    border-radius: 13px;
+                                    margin-top: 10px;
+                                }
+                            </style>
+                            <div class="genre-container">
+                                <p style="text-align: left; font-size:12px">{{eachGenre.title}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    {% else %}
+                    <div class="book" style="visibility: hidden">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
+
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("add_book").addEventListener("keydown", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                    }
+                });
+
+                const book_title_field = document.getElementById("book_title");
+
+                book_title_field.addEventListener('input', function() {
+                    document.getElementById("bye").innerText = book_title_field.value // Simulates a click on the button
+                    document.getElementById("generate_suggestions").click();
+                });
+
+                book_title_field.addEventListener("keydown", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        document.getElementById("book_submit").click();
+                    }
+                });
+
+                document.getElementById("book_submit").addEventListener('click', function() {
+                    document.getElementById('goodbye').innerText = 'yay';
+                    const inputValue = book_title_field.value;
+                    fetch('books/add_book/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': getCookie('csrftoken') // Include CSRF token for security
+                        },
+                        body: `my_data_field=${encodeURIComponent(inputValue)}`
+                    })
+                    .then(response => response.json());
+                    window.location.reload();
+                });
+            });
+
+        </script>
+    </body>
+</html>
