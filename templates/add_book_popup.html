@@ -31,16 +31,11 @@
                         </ul>
                     </div>
                     
-
-                    {% comment %} book_cover {% endcomment %}
-                    
                     {% comment %} book title submission button {% endcomment %}
                     <button type="button" id="generate_suggestions" 
                         hx-post="/books/suggested_books/" hx-target="#suggestions" hx-swap="innerHTML">
                         Search For Book!
                     </button>
-
-                    
                     
                     {% comment %} author input field (auto fills) {% endcomment %}
                     <div style="display: flex; justify-content: center">

@@ -117,15 +117,15 @@
                     <button type="submit">Add Throne</button>
                 </form>
 
-                <div style="display: flex; margin-bottom: 20px; margin-left: 10px" id="filters">
 
-                <p style="margin-top: 12px; margin-right: 10px">Filter By: </p>
-
-                <form action="{% url 'books:add_throne' %}" method="post">
+                <form action="{% url 'books:add_throne' %}" method="post" style="margin: 0px">
                 {% csrf_token %}
-                    <input id ="bhelllo" name="bhelllo" value="hekeek"></input>
+
+                <div style="display: flex; margin-left: 10px" id="filters">
+                <p style="margin-top: 12px; margin-right: 10px">Filter By: </p>
+                <input id ="bhelllo" name="bhelllo" value="hekeek" ></input>
                 
-                {% for each_genre in all_unique_genres%}
+                {% for each_genre in all_used_genres%}
                     <button class="genre-container" style="background-color: {{each_genre.color}}; 
                         display: flex; padding: 0px 5px 0px 5px; margin-right: 5px;" onclick="select_filter(this)"
                         hx-post="/filter_view/", hx-target="#view-books", swap="innerHTML" type="button">
@@ -133,63 +133,16 @@
                         {% comment %} hx-post="/books/filter-view/", hx-target="#view-books", swap="innerHTML" {% endcomment %}
 
                             <p style="text-align: left; font-size:12px">{{each_genre.title}}</p>
-                            
                     </button>
-                </form>
-
-                    {% comment %} <input id="filters-selected"> </input> {% endcomment %}
                 {% endfor %}
                 </div>
-
+                </form>
+                
                 <div id="view-books">
-                {% for each_row in books_and_genres%}
-                    <div class="book-container">
-                    {% for each_book_and_genres in each_row %}
-                        {% if each_book_and_genres != -1%}
-                        <div class="book" style="display:flex;">
+                {% include 'all_books_view.html' %}
+                </div>
 
-                            <div style="width: 43%; background-color: pink; border-radius: 15px; align-content: center">
-                                <img src="{{each_book_and_genres.book.cover}}" 
-                                alt="Italian Trulli" style="height: 95%; border-radius: 10px">
-                            </div>
-
-                            <div style="width: 57%; border-radius: 15px; padding-left: 15px; padding-right: 15px;">
-                                <h2 style="text-align: left">{{each_book_and_genres.book.title}}</h2>
-                                <p style="text-align: left">{{each_book_and_genres.book.author}}</p>
-
-                                <div style="display: flex; justify-content: space-around; margin-top: 4px;">
-                                {%for eachStar in each_book_and_genres.rating%}
-
-                                {% if eachStar == 1 %}
-                                    <img src="{% static 'images/star-filled.png' %}" style="width: 14%">
-                                {% else %}
-                                    <img src="{% static 'images/star-outline.png' %}" style="width: 14%">
-                                {% endif %}
-
-                                {% endfor %}
-                                </div>
-
-                                <div style="display: flex;">
-                                {% for eachGenre in each_book_and_genres.genres%}
-                                    <div class="genre-container" style="background-color: {{eachGenre.color}}; 
-                                    display: flex; padding: 0px 5px 0px 5px; margin-right: 5px">
-                                        <p style="text-align: left; font-size:12px">{{eachGenre.title}}</p>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-                        </div>
-                        {% else %}
-                        <div class="book" style="visibility: hidden">
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
         </div>
-
         </div>
 
         <script>
