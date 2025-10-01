@@ -123,7 +123,7 @@
 
                 <div style="display: flex; margin-left: 10px" id="filters">
                 <p style="margin-top: 12px; margin-right: 10px">Filter By: </p>
-                <input id ="bhelllo" name="bhelllo" value="hekeek" ></input>
+                <input id ="filters_selected" name="filters_selected" style="display:none" ></input>
                 
                 {% for each_genre in all_used_genres%}
                     <button class="genre-container" style="background-color: {{each_genre.color}}; 
@@ -175,7 +175,7 @@
                     element.classList.add("active");
                     filters_selected.push(element_text);
                 }
-                document.getElementById("bhelllo").value = filters_selected;
+                document.getElementById("filters_selected").value = filters_selected;
             }
         </script>
     </body>

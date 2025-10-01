@@ -83,7 +83,7 @@ def index(request, filters=[]):
 def filter_view(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            filters = request.POST['bhelllo'].split(",")
+            filters = request.POST['filters_selected'].split(",")
             users_books = Book.objects.filter(user=request.user)
 
             for each_filter in filters:
